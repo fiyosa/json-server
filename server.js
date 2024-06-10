@@ -5,6 +5,7 @@ const port = process.env.PORT || 4000
 
 const router = jsonServer.router(path.join(__dirname, 'db.json')) // Path to db.json
 const server = jsonServer.create() // Express server
+const middlewares = jsonServer.defaults()
 
 // Avoid CORS issue
 server.use((_, res, next) => {
@@ -13,8 +14,11 @@ server.use((_, res, next) => {
   next()
 })
 
+server.use(middlewares)
 server.use(router)
 
 server.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`)
 })
+
+module.exports = server

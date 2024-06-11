@@ -41,7 +41,7 @@ const generateImage = async (req, res) => {
     // Add text to the canvas multiple times for thickness
     const x = size / 2
     const y = size / 2
-    const thickness = 1.3 // Adjust for desired thickness
+    const thickness = 1 // Adjust for desired thickness
 
     for (let dx = -thickness; dx <= thickness; dx++) {
       for (let dy = -thickness; dy <= thickness; dy++) {

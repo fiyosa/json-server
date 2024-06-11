@@ -1,5 +1,6 @@
 const jsonServer = require('json-server')
 const path = require('path')
+const generateImage = require('./generateImage')
 
 const port = process.env.PORT || 4000
 
@@ -14,6 +15,7 @@ server.use((_, res, next) => {
   next()
 })
 
+server.use('/img/:dimension/:hexColor', generateImage)
 server.use(middlewares)
 server.use(router)
 

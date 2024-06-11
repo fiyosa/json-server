@@ -28,7 +28,7 @@ const generateImage = async (req, res) => {
     context.fillRect(0, 0, size, size)
 
     // Set text properties
-    context.font = `bold ${size * 0.1}px Arial`
+    context.font = `bold ${size * 0.1}px sans-serif`
     context.fillStyle = 'white'
     context.textAlign = 'center'
     context.textBaseline = 'middle'

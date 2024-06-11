@@ -1,4 +1,8 @@
-const { createCanvas } = require('canvas')
+const { createCanvas, registerFont } = require('canvas')
+const path = require('path')
+
+// Register the Arial font
+registerFont(path.join(__dirname, 'Arial.ttf'), { family: 'Arial' })
 
 const generateImage = async (req, res) => {
   const { dimension, hexColor } = req.params
@@ -28,13 +32,22 @@ const generateImage = async (req, res) => {
     context.fillRect(0, 0, size, size)
 
     // Set text properties
-    context.font = `bold ${size * 0.1}px sans-serif`
+    const fontSize = size * 0.1
+    context.font = `bold ${fontSize}px Arial`
     context.fillStyle = 'white'
     context.textAlign = 'center'
     context.textBaseline = 'middle'
 
-    // Add text to the canvas
-    context.fillText(text, size / 2, size / 2)
+    // Add text to the canvas multiple times for thickness
+    const x = size / 2
+    const y = size / 2
+    const thickness = 1.3 // Adjust for desired thickness
+
+    for (let dx = -thickness; dx <= thickness; dx++) {
+      for (let dy = -thickness; dy <= thickness; dy++) {
+        context.fillText(text, x + dx, y + dy)
+      }
+    }
 
     // Get buffer from canvas
     const buffer = canvas.toBuffer('image/png')

@@ -1,5 +1,9 @@
 # Install package
 
 ```sh
-npm install --include=optional
+npm install
+```
+
+```sh
+yarn install
 ```

@@ -1,12 +1,11 @@
-const sharp = require('sharp')
-const Jimp = require('jimp')
+const { createCanvas } = require('canvas')
 
 const generateImage = async (req, res) => {
   const { dimension, hexColor } = req.params
 
   // Validate dimension
   if (!/^\d+$/.test(dimension)) {
-    return res.status(400).send('Invalid dimension. It should be a positive integer.')
+    return res.status(400).json({ message: 'Invalid dimension. It should be a positive integer.' })
   }
 
   const size = parseInt(dimension, 10)
@@ -15,53 +14,36 @@ const generateImage = async (req, res) => {
   // Validate hex color
   const hexColorRegex = /^#?[0-9A-F]{6}$/i
   if (!hexColorRegex.test(hexColor)) {
-    return res.status(400).send('Invalid hex color format. Use RRGGBB.')
+    return res.status(400).json({ message: 'Invalid hex color format. Use RRGGBB.' })
   }
 
-  // Ensure hex color starts with #
   const normalizedHexColor = hexColor.startsWith('#') ? hexColor : `#${hexColor}`
 
   try {
-    // Create base image
-    const image = await sharp({
-      create: {
-        width: size,
-        height: size,
-        channels: 4, // RGBA
-        background: normalizedHexColor,
-      },
-    })
-      .png()
-      .toBuffer()
+    const canvas = createCanvas(size, size)
+    const context = canvas.getContext('2d')
 
-    // Load the image into Jimp for text overlay
-    const jimpImage = await Jimp.read(image)
+    // Set background color
+    context.fillStyle = normalizedHexColor
+    context.fillRect(0, 0, size, size)
 
-    // Load a bold font with a smaller size
-    const font = await Jimp.loadFont(Jimp.FONT_SANS_32_WHITE) // Using a smaller font size
+    // Set text properties
+    context.font = `bold ${size * 0.1}px Arial`
+    context.fillStyle = 'white'
+    context.textAlign = 'center'
+    context.textBaseline = 'middle'
 
-    // Add text to the image
-    jimpImage.print(
-      font,
-      0,
-      0,
-      {
-        text: text,
-        alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER,
-        alignmentY: Jimp.VERTICAL_ALIGN_MIDDLE,
-      },
-      size,
-      size
-    )
+    // Add text to the canvas
+    context.fillText(text, size / 2, size / 2)
 
-    // Get the final buffer
-    const finalImage = await jimpImage.getBufferAsync(Jimp.MIME_PNG)
+    // Get buffer from canvas
+    const buffer = canvas.toBuffer('image/png')
 
     res.type('png')
-    res.send(finalImage)
+    res.send(buffer)
   } catch (error) {
     console.error(error)
-    res.status(500).send('Error generating image')
+    res.status(500).json({ message: 'Error generating image' })
   }
 }
 

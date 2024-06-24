@@ -4,8 +4,8 @@
   "description": "fake rest api",
   "type": "commonjs",
   "scripts": {
-    "dev": "npx json-server --watch db.json -p 4000",
-    "start": "node server.js"
+    "dev": "node server.js",
+    "start": "npx json-server --watch db.json -p 4000"
   },
   "author": "fys",
   "license": "ISC",

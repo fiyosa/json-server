@@ -2,10 +2,10 @@
   "name": "json-server",
   "version": "1.0.0",
   "description": "fake rest api",
-  "type": "commonjs",
   "scripts": {
-    "dev": "node server.js",
-    "start": "npx json-server --watch db.json -p 4000"
+    "dev:ori": "npx json-server --watch db.json -p 4000",
+    "dev": "set NODE_ENV=dev && node server.js",
+    "start": "node server.js"
   },
   "author": "fys",
   "license": "ISC",

@@ -4,7 +4,7 @@ const fs = require('fs')
 const generateImage = require('./generateImage')
 
 const port = process.env.PORT || 4000
-const env = (process.env.NODE_ENV ?? 'dev').trim()
+const env = (process.env.NODE_ENV ?? 'prod').trim()
 
 const router =
   env === 'dev'

@@ -5,11 +5,12 @@ const generateImage = require('./generateImage')
 
 const port = process.env.PORT || 4000
 
-const env = process.env.NODE_ENV ?? ''
+const env = (process.env.NODE_ENV ?? 'dev').trim()
 const router =
   env === 'dev'
     ? jsonServer.router(path.join(__dirname, 'db.json')) // Access local db.json
     : jsonServer.router(JSON.parse(fs.readFileSync(path.join(__dirname, 'db.json')))) // Read only db.json
+
 const server = jsonServer.create() // Express server
 const middlewares = jsonServer.defaults()
 

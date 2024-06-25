@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "fake rest api",
   "scripts": {
-    "dev": "npx json-server --watch tmp/db.json -p 4000",
-    "start": "set NODE_ENV=dev && node server.js"
+    "dev:ori": "npx json-server --watch db.json -p 4000",
+    "dev": "set NODE_ENV=dev && node server.js",
+    "start": "node server.js"
   },
   "author": "fys",
   "license": "ISC",
